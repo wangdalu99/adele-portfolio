@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Void — ADELE LU</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background: #000; 
+      color: #fff; 
+      margin: 0; 
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-cn { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    
+    .container-safe {
+      width: 100%;
+      max-width: 1790px;
+      margin: 0 auto;
+      padding: 0 77px;
+    }
+
+    /* 顶部媒体容器：保持原 1636x847 尺寸 */
+    .hero-media-container {
+      width: 1636px;
+      height: 847px;
+      margin: 40px auto 0;
+      overflow: hidden;
+      background: #111;
+      position: relative; /* 为指示点定位 */
+    }
+
+    /* 轮播滑动结构 */
+    .slider-wrapper {
+      display: flex;
+      width: 400%; /* 4张图共400% */
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .slide {
+      width: 25%; 
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+    }
+
+    /* 轮播指示点样式 */
+    .slider-dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 20;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot.active {
+      background: #fff;
+      transform: scale(1.5);
+    }
+
+    /* --- 动画 CSS --- */
+    .reveal-text {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-text.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-300 { transition-delay: 300ms; }
+
+    /* 图片基础样式 */
+    .clickable-img { cursor: zoom-in; transition: opacity 0.3s ease; }
+    .clickable-img:hover { opacity: 0.9; }
+    
+    .detail-img { width: 804px; height: 485px; object-fit: cover; }
+    .bottom-img-standard { width: 100%; max-width: 1636px; height: auto; display: block; margin: 0 auto; }
+
+    /* 放大查看全屏样式 */
+    .zoomed {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: auto !important; height: auto !important;
+      max-width: 95vw !important; max-height: 95vh !important;
+      z-index: 9999; cursor: zoom-out;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.95); 
+    }
+
+    .glass-btn {
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 12px 32px; font-size: 13px; font-weight: 500;
+      transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+    }
+    .glass-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+    .detail-label { font-weight: 600; font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
+    .detail-value { color: rgba(255, 255, 255, 0.6); font-size: 16px; line-height: 1.6; }
+  </style>
+</head>
+<body class="pb-24">
+
+  <section class="hero-media-container" id="hero-slider">
+    <div class="slider-wrapper" id="slider-wrapper">
+      <div class="slide"><img src="IMG_7017.JPG" class="clickable-img" alt="Slide 1" onclick="toggleZoom(this)"></div>
+      <div class="slide"><img src="IMG_6920 2.JPG" class="clickable-img" alt="Slide 2" onclick="toggleZoom(this)"></div>
+      <div class="slide"><img src="IMG_6910.JPG" class="clickable-img" alt="Slide 3" onclick="toggleZoom(this)"></div>
+      <div class="slide"><img src="IMG_7081.JPG" class="clickable-img" alt="Slide 4" onclick="toggleZoom(this)"></div>
+    </div>
+    
+    <div class="slider-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+    </div>
+  </section>
+
+  <main class="container-safe">
+    
+  
+
+    <div class="grid grid-cols-12 gap-8 items-start" style="margin-top: 100px;">
+      <div class="col-span-4">
+        <h1 class="text-[20px] font-medium tracking-tight leading-[1.6]">
+          Un·Future Ecological Vision Plan Exhibition Planning Project<br>
+          <span class="font-cn">未·未来 生态远见计划展览策划项目（全景展览平面图绘制、艺术家作品制作）</span>
+        </h1>
+      </div>
+      <div class="col-span-5 ml-20">
+        <h2 class="detail-label">Intro/介绍:</h2>
+        <p class="detail-value max-w-[450px]">
+          “生态远见计划 - 生”展览以“生”为主题，自甲骨文草木萌发的字义为启始，连接生命、生态、生活、 生产的不同图景。展览板块由“産 Chan”、“眚 Sheng”、“甡 Shen”、“甠 Qing”四部分构成，以生命设计、超物体、合成生物材料、后人类、第三自然、生态资本、响应式环境、气候设计、复原力等关键词为线索，涵盖来自 15 个国家及地区的 28 位艺术家设计师，包括哈佛大学、麻省理工学院、荷兰建筑设计博物馆等涉及 45 个物种的 32 件艺术设计作品，尝试通过全新视角探求“生”活的变迁、“生”境的变局、“生”态的变革以及“生”存的变机，以期从中国生态语境和文化背景出发，探讨生态危机背后具有远见性的新机遇，呼唤一场跨文化、跨时空、跨领域的国际生态对话。
+        </p>
+      </div>
+      <div class="col-span-3 space-y-6 ml-20">
+        <div><h2 class="detail-label">Year/年份:</h2><p class="detail-value">2023</p></div>
+        <div><h2 class="detail-label">Location/地点:</h2><p class="detail-value">Beijing, China</p></div>
+        <div><h2 class="detail-label">Form/形式:</h2><p class="detail-value">Mapping, Exhibition</p></div>
+      </div>
+    </div>
+
+    <section class="flex items-center justify-center text-center" style="height: 600px; margin-top: 200px; margin-bottom: 240px;">
+        <div style="max-width: 1200px;"> 
+            <h2 class="font-cn font-light tracking-wide reveal-text" 
+                style="font-size: 50px; line-height: 65px; margin-bottom: 40px;"> 
+                如何在国际化视觉语境下，通过方寸间的平面逻辑，重构“生”之万物的生态连接？
+            </h2>
+            <span class="reveal-text delay-300" 
+                  style="font-family: 'Inter'; font-size: 40px; opacity: 0.8; display: block; line-height: 54px; margin-top: 30px;">
+                  How can we, in an internationalized visual context, through the logical structure of a small area of space, reconstruct the ecological connections of all "living" things?
+            </span>
+        </div>  
+    </section>
+
+    <div class="mt-30">
+        <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">
+          Design Content 设计内容 
+        </h2>
+        <div class="w-full h-[1px] bg-white/70"></div>
+
+        <div class="flex justify-between items-start mt-20">
+          <div class="flex flex-col gap-4"> 
+            <img src="第3页-15_副本.JPG" class="detail-img clickable-img" alt="Detail Left" onclick="toggleZoom(this)">
+            <p class="text-[14px] text-white/90 uppercase">
+              艺术家作品制作到落地 From the creation of an artist's works to the organization of a exhibition
+            </p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <img src="第3页-17_副本.JPG" class="detail-img clickable-img" alt="Detail Right" onclick="toggleZoom(this)">
+            <p class="text-[14px] text-white/90 uppercase">
+              展览平面图绘制 Drawing of the exhibition floor plan
+            </p>
+          </div>
+        </div>
+    </div>
+
+    <div class="mt-60">
+      <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">
+        Detailed Introduction 详细介绍 
+      </h2>
+      <div class="w-full h-[1px] bg-white/70"></div>
+      <div class="mt-10">
+        <img src="截屏2026-02-14 22.12.44.png" class="bottom-img-standard clickable-img" alt="Detailed Info" onclick="toggleZoom(this)">
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-6" style="margin-top: 120px;">
+      <a href="index.html" class="glass-btn">Home</a>
+      <a href="index.html#latest-projects" class="glass-btn">All Projects</a>
+    </div>
+
+  </main>
+
+  <script>
+    // 轮播逻辑
+    let currentSlide = 0;
+    const totalSlides = 4;
+    const wrapper = document.getElementById('slider-wrapper');
+    const dots = document.querySelectorAll('.dot');
+
+    function updateSlider() {
+      wrapper.style.transform = `translateX(-${currentSlide * 25}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlider();
+    }
+
+    // 自动轮播 (每4秒)
+    let autoPlay = setInterval(() => {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateSlider();
+    }, 2000);
+
+    // 用户手动点击后重置计时，防止冲突
+    document.querySelectorAll('.dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+            clearInterval(autoPlay);
+            autoPlay = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 2000);
+        });
+    });
+
+    // 动画触发脚本
+    const observerOptions = { threshold: 0.2 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+
+    // 图片放大脚本
+    function toggleZoom(img) {
+      img.classList.toggle('zoomed');
+      document.body.style.overflow = img.classList.contains('zoomed') ? 'hidden' : 'auto';
+    }
+
+    // Esc 退出放大
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const zoomedImg = document.querySelector('.clickable-img.zoomed');
+        if (zoomedImg) toggleZoom(zoomedImg);
+      }
+    });
+  </script>
+</body>
+</html>

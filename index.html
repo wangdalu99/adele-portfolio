@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADELE LU — Flowing Wheat Fields</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 字体：在此修改全局与标题字体，详见下方 style 内 .font-title-en -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; overflow-x: hidden; }
+    body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: #000; }
+
+    /* ========== 自定义光标：圆形液态玻璃（iOS 26.2 风格 1:1 还原） ==========
+       调节圆的半径：改下面 --cursor-radius 即可。例如 12px=小圆、20px=默认、28px=大圆 */
+    @media (hover: hover) and (pointer: fine) {
+      body, body * { cursor: none !important; }
+      .cursor-glass {
+        --cursor-radius: 19px;  /* 圆的半径：12px / 16px / 20px / 24px / 28px / 32px 等 */
+        position: fixed;
+        width: calc(var(--cursor-radius) * 2);
+        height: calc(var(--cursor-radius) * 2);
+        margin-left: calc(var(--cursor-radius) * -1);
+        margin-top: calc(var(--cursor-radius) * -1);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 99999;
+        /* iOS 26.2 三合一滤镜 */
+        backdrop-filter: blur(4px) saturate(190%) brightness(1.05);
+        -webkit-backdrop-filter: blur(10px) saturate(190%) brightness(1.05);
+        background: rgba(255, 255, 255, 0.02);
+        border: 0.5px solid rgba(255, 255, 255, 0.25);
+        box-shadow:
+          inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+          inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05),
+          0 8px 20px -5px rgba(0, 0, 0, 0.12);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .cursor-glass.cursor-active {
+        transform: scale(0.96);
+        backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+        -webkit-backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+      }
+    }
+
+    .font-title-en { font-family: 'Inter', system-ui, sans-serif; }
+
+    /* 下半部分主标题 "Flowing Wheat Fields"：字体大小 / 行高 / 透明度 → 在此修改 */
+    .title-main {
+      font-size: 3.2rem;      /* 字体大小 */
+      line-height: 1.1;        /* 行间距 */
+      color: #ffffff;          /* 纯白 */
+      font-weight: 600;        /* semi-bold */
+    }
+
+    /* 副标题 "Ecological Art Short Film."：字体大小 / 行高 / 透明度 → 在此修改 */
+    .title-sub {
+      font-size: 2.5rem;      /* 字体大小（约主标题一半） */
+      line-height: 1.2;      /* 行间距 */
+      color: rgba(255, 255, 255, 0.7); /* 透明度约 70% */
+      font-weight: 400;
+    }
+    /* 说明段落：字体大小 / 行高 / 透明度 → 在此修改 */
+    .title-desc {
+      font-size: 1.1rem;         /* 字体大小 */
+      line-height: 1.3;        /* 行间距 */
+      color: rgba(255, 255, 255, 0.80);  /* 透明度约 80% */
+      font-weight: 400;
+    }
+
+    /* 液态玻璃效果：毛玻璃 + 细边框 + 微弱高光 */
+    .liquid-glass {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+    /* ========== 顶部导航栏：透明度 → 改下面 background 的 0.15 即可（0=全透明，1=不透明） ========== */
+    .liquid-glass-nav {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(0, 0, 0, 0.05);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+    }
+    .liquid-glass-capsule {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+
+    /* ========== 底部 5 个按钮专用液态玻璃（参考图：模糊感 / 光感 / 边缘亮）→ 只改这里即可 ========== */
+    .liquid-glass-footer {
+      backdrop-filter: blur(19px);
+      -webkit-backdrop-filter: blur(19px);
+      background: rgba(0, 0, 0, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.55),
+        inset 0 2px 8px -2px rgba(255, 255, 255, 0.3),
+        0 0 12px rgba(255, 255, 255, 0.05);
+    }
+    /* 修改说明：
+       - 模糊感：改 backdrop-filter 的 blur(24px)，数值越大越糊。
+       - 光感（内部高光）：改 box-shadow 里 inset 0 1px 0 的 rgba 透明度/亮度；第二行 inset 控制更柔和的高光范围。
+       - 边缘亮：改 border 的 rgba(255,255,255,0.32) 透明度；最外层的 0 0 12px 控制边缘微微外发光。
+       - 整体深浅：改 background 的 rgba(0,0,0,0.22)，黑色透明度越大按钮越暗。
+    */
+
+    /* ========== 背景视频：长宽、铺满方式、显示位置 → 在此调整（随首屏一起滚动） ========== */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .video-backdrop {
+      position: absolute;
+      top: -13%; left: 0; right: 0; bottom: 0;
+
+      /* 定位：可改为 top/left/right/bottom + 数值 */
+
+      width: 110%;                 /* 宽度：可改为 120%、80%、50vw 等 */
+      height: 105%;                /* 高度：可改为 120%、80%、100vh 等 */
+      object-fit: fill;           /* 铺满方式：cover=裁切填满 | contain=完整显示 | fill=拉伸填满 */
+      object-position: center 90%; /* 显示位置：改第二个数可微调上下 */
+      z-index: 0;
+    }
+
+    /* ========== 中间部分背景视频：长宽、铺满方式、上下左右位置 → 在此调整（随页面滚动） ========== */
+    .profile-section-with-video {
+      position: relative;
+      overflow: hidden;
+    }
+    .video-backdrop-middle {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;          /* 铺满方式：cover=裁切填满 | contain=完整显示 | fill=拉伸填满 */
+      object-position: center center; /* 显示位置：center center | top left | 50% 30% 等 */
+      z-index: 0;
+      pointer-events: none;
+    }
+    .profile-section-content {
+      position: relative;
+      z-index: 1;
+    }
+    /* 调节说明（.video-backdrop-middle）：
+       - 长宽：改 width / height，如 120%、150% 让视频大于容器；或 80%、50% 缩小。
+       - 上下左右位置：改 top/left/right/bottom。例如 top: -10%; left: -5%; width: 110%; height: 110%; 整体偏左上。
+       - 或改 object-position：center top=露出顶部；center bottom=露出底部；30% 50%=偏左；70% 50%=偏右。
+       - 铺满方式：object-fit: cover=裁切填满无黑边；contain=完整显示可能留黑边；fill=拉伸填满可能变形。
+    */
+    /* 调节说明：
+       - 长宽：改 width / height，如 120% 让视频略大于视口（配合 object-fit: cover 更少黑边）。
+       - 具体位置：改 object-position。例如 object-position: top center 露出上半部分；50% 20% 往上看；center bottom 露出底部。
+       - 视频在页面中的"摆放"位置：改 inset 或 top/left/right/bottom，例如 top: -10%; left: -5%; width: 110%; height: 110%; 让视频整体偏左上并略放大。
+    */
+    .video-no-controls {
+      pointer-events: none; /* 禁止点击视频，避免某些浏览器弹出控制条 */
+    }
+
+    /* ========== 底部 5 个按钮：大小、效果、字体 → 在此调整 ========== */
+    .footer-btn {
+      font-size: 0.875rem;     /* 字体大小：可改为 1rem、1.125rem 等 */
+      padding: 0.75rem 1.25rem; /* 按钮内边距：第一个垂直、第二个水平 */
+      border-radius: 9999px;   /* 圆角（胶囊形） */
+      /* 效果与 .liquid-glass-capsule 一致，如需单独改透明度/模糊： */
+      /* backdrop-filter: blur(20px); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); */
+    }
+    @media (min-width: 640px) {
+      .footer-btn { padding: 0.75rem 1.5rem; } /* 大屏时稍大一点 */
+    }
+
+    /* ========== 顶部导航栏：Logo、链接、图标按钮 位置与大小 → 在此调整 ========== */
+    .nav-wrap {
+      padding: 1rem 1.5rem;  /* 导航栏内边距：上下 1rem，左右 1.5rem → 改这里调整体位置 */
+    }
+    @media (min-width: 640px)  { .nav-wrap { padding: 1rem 2rem; } }
+    @media (min-width: 768px)  { .nav-wrap { padding: 1rem 3rem; } }
+    @media (min-width: 1024px) { .nav-wrap { padding: 1rem 5rem; } }
+    .nav-logo {
+      font-size: 1.125rem;   /* ADELE LU 字体大小 */
+      font-weight: 600;
+    }
+    .nav-link {
+      font-size: 0.875rem;    /* Home / Projects / Skills / Intro 字体大小 */
+    }
+    @media (min-width: 768px) { .nav-link { font-size: 1rem; } }
+    .nav-icon-btn {
+      width: 2.0rem; height: 1.0rem;  /* 右侧圆形图标按钮大小 */
+    }
+    @media (min-width: 768px) { .nav-icon-btn { width: 2.5rem; height: 2.5rem; } }
+    /* 右上角圆形按钮：液态玻璃质感（模糊/边框/高光在此改） */
+    .nav-icon-btn-glass {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+    /* 导航栏四个链接（Home / Projects / Skills / Intro）之间的间距 → 改下面数值即可调节 */
+    .nav-links-gap { gap: 5.0rem; }
+    @media (min-width: 640px) { .nav-links-gap { gap: 2.0rem; } }
+    @media (min-width: 768px) { .nav-links-gap { gap: 2.5rem; } }
+
+    /* ========== 三句标题整体向上移动：改 margin-top 数值（负值越大越靠上） ========== */
+    .hero-text-block {
+      margin-top: -60px;  /* 例如 -80px、-100px 会再往上移 */
+    }
+
+    /* ========== 中英文字体：中文使用 Apple 中文简体，英文使用 Inter ========== */
+    .font-cn {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    .font-en {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    /* 胶囊英文字体（按钮）：12.5px / Bold / 透明度 61% */
+    .capsule-en {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.61);
+    }
+
+    /* ========== 教育背景 + 获奖经历 编组：与首页 MORE 按钮左对齐，可调长宽 → 改下方 CSS 变量 ========== */
+    .profile-section {
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;   /* 与 footer/MORE 一致 */
+      padding-right: 1.5rem;
+    }
+    @media (min-width: 640px)  { .profile-section { padding-left: 2rem; padding-right: 2rem; } }
+    @media (min-width: 768px)  { .profile-section { padding-left: 3rem; padding-right: 3rem; } }
+    @media (min-width: 1024px) { .profile-section { padding-left: 5rem; padding-right: 5rem; } }
+
+    /* 编组长宽 → 改下面变量即可调整占据面积 */
+    .profile-content-group {
+      --group-width: 100%;           /* 宽度：100%、50%、600px、min(600px, 90%) 等 */
+      --group-max-width: none;       /* 最大宽度：800px、90vw、none 等 */
+      --group-min-width: 0;          /* 最小宽度：200px、0 等 */
+      --group-min-height: auto;      /* 最小高度：300px、auto 等 */
+      width: var(--group-width);
+      max-width: var(--group-max-width);
+      min-width: var(--group-min-width);
+      min-height: var(--group-min-height);
+    }
+
+    /* ========== 人物照片+简介 编组：右对齐，整体位移 → 改下面变量 ========== */
+    .profile-photo-group {
+      --photo-group-margin-top: 0;     /* 整体上移：-20px；下移：20px */
+      --photo-group-margin-right: 0;   /* 整体右移：20px；左移：-20px */
+      --photo-group-margin-bottom: 0;
+      --photo-group-margin-left: 0;    /* 整体左移：20px；右移：-20px */
+      margin-top: var(--photo-group-margin-top);
+      margin-right: var(--photo-group-margin-right);
+      margin-bottom: var(--photo-group-margin-bottom);
+      margin-left: var(--photo-group-margin-left);
+    }
+
+    /* 内容大标题：例如 Educational Background / Awards and Honors Experience */
+    .section-title {
+      font-size: 20px;
+      font-weight: 500; /* medium */
+      letter-spacing: 0.04em;
+    }
+
+    /* 时间线分组通用行：hover 时出现液态玻璃胶囊，圆角 25 */
+    .liquid-hover-pill {
+      position: relative;
+      border-radius: 25px;
+      overflow: hidden;
+      cursor: default;
+    }
+    .liquid-hover-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+        inset 0 2px 8px -2px rgba(255, 255, 255, 0.35),
+        0 0 12px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      opacity: 0;
+      transition: opacity 180ms ease-out;
+    }
+    .liquid-hover-pill-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .liquid-hover-pill:hover::before {
+      opacity: 1;
+    }
+
+    /* ========== iOS 26.2 液态玻璃小组件（人物照片下方）1:1 录屏质感 ========== */
+    .widget-ios262 {
+      border-radius: 25px;
+      backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      -webkit-backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.25);
+      box-shadow:
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05),
+        0 8px 20px -5px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .widget-ios262:active {
+      transform: scale(0.96);
+      backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+      -webkit-backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+    }
+    .widget-ios262-circle {
+      border-radius: 50%;
+      backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      -webkit-backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.25);
+      box-shadow:
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05),
+        0 8px 20px -5px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .widget-ios262-circle:active {
+      transform: scale(0.96);
+      backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+      -webkit-backdrop-filter: blur(15px) saturate(220%) brightness(1.05);
+    }
+    /* LELTS En 圆圈：40×40 深灰 #363636，字号 16 Bold 白字 */
+    .widget-en-circle {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 50%;
+      background: #363636;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    /* Major Course 单选钮：16×16 深灰填充 + 细白边 */
+    .widget-radio-dot {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border-radius: 50%;
+      background: rgba(80, 80, 80, 0.9);
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+    }
+    /* Professional Skills：Adobe 实心深灰胶囊 */
+    .skill-pill-solid {
+      border-radius: 12px;
+      background: #333;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 0.5px solid rgba(255, 255, 255, 0.08);
+    }
+    /* Professional Skills：AIGC/3D 液态玻璃胶囊 */
+    .skill-pill-glass {
+      border-radius: 12px;
+      backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      -webkit-backdrop-filter: blur(25px) saturate(190%) brightness(1.05);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05), 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+      padding: 6px 12px;
+      font-size: 11px;
+      color: #fff; 
+    }
+    .skill-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    } 
+    /* 半圆仪表盘：W58 H55，白点 7.29×7.25 */
+    .gauge-arc {
+      stroke: #444;
+      stroke-width: 6;
+      fill: none;
+      stroke-linecap: round;
+    }
+    .gauge-dot {
+      fill: #fff;
+    }
+
+    /* Latest Projects 顶部四个胶囊筛选按钮：圆角 12，液态玻璃质感 */
+    .pill-filter {
+      border-radius: 12px;
+      backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(255, 255, 255, 0.09);; /* Fill 10% */
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.3),   /* Light 70% */
+        0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ========== Latest Projects 项目卡片 hover 动效（参考录屏） ========== */
+    .project-card {
+      cursor: pointer;
+    }
+    .project-card-img {
+      transition: transform 260ms ease-out, filter 260ms ease-out;
+    }
+    .project-card-text {
+      padding: 10px 18px 12px; /* 让文字与白底左右留出一点呼吸感 */
+      transition: background-color 220ms ease-out, color 220ms ease-out;
+    }
+    .project-card-text h3,
+    .project-card-text p {
+      transition: color 220ms ease-out;
+    }
+    .project-card:hover .project-card-img {
+      transform: translateY(-2px);
+      filter: brightness(1.03);
+    }
+    .project-card:hover .project-card-text {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    .project-card:hover .project-card-text h3,
+    .project-card:hover .project-card-text p {
+      color: #000000;
+    }
+
+    /* Latest Projects 横向滚动区域：隐藏滚动条，平滑左右滑动 */
+    .projects-scroll {
+      scroll-behavior: smooth;
+      scrollbar-width: none;          /* Firefox */
+      -ms-overflow-style: none;       /* IE / Edge */
+    }
+    .projects-scroll::-webkit-scrollbar {
+      display: none;                  /* Chrome / Safari */
+    }
+
+    .projects-arrow {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.50);
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.40),
+        0 0 12px rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white flex flex-col">
+  <!-- 自定义光标：圆形液态玻璃（仅鼠标设备显示，触屏隐藏） -->
+  <div class="cursor-glass" id="cursor-glass" aria-hidden="true"></div>
+  <!-- 导航栏：液态玻璃 + 中部四个链接居中（间距见 .nav-links-gap） -->
+  <header class="fixed top-0 left-0 right-0 z-50 liquid-glass-nav">
+    <nav class="nav-wrap w-full max-w-[1920px] mx-auto flex items-center">
+      <div class="flex-1 flex justify-start min-w-0">
+        <a  class="nav-logo text-white tracking-wide">ADELE LU</a>
+      </div>
+      <div class="flex flex-1 justify-center items-center nav-links-gap">
+        <a href="#Home" class="footer-btn liquid-glass-footer nav-link text-white font-medium hover:bg-white/10 transition whitespace-nowrap">Home</a>
+        <a href="#projects" class="nav-link text-white/90 hover:text-white transition whitespace-nowrap">Projects</a>
+      </div>
+      <div class="flex-1 flex justify-end min-w-0">
+        <button type="button" class="nav-icon-btn nav-icon-btn-glass rounded-full flex items-center justify-center text-white/80 hover:bg-white/10 transition" aria-label="菜单"></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 首屏区域：视频 + 底部标题与按钮（随页面自然向下滚动） -->
+  <section class="hero-section">
+    <video
+      class="video-backdrop video-no-controls"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      disablePictureInPicture
+      disableRemotePlayback
+      aria-hidden="true"
+    >
+      <source src="background-video.mp4" type="video/mp4">
+    </video>
+    <!-- 底部区域：左下角英文标题 + 5 个按钮/标签同一行底部对齐，留安全距离 -->
+    <footer data-hero-footer class="absolute bottom-0 left-0 right-0 z-10 max-w-[1920px] mx-auto px-6 sm:px-8 md:px-12 lg:px-20 pb-6 sm:pb-8 lg:pb-10 pt-4">
+      <div class="flex flex-col gap-6">
+      <!-- 左下角：英文标题块（字体见 .title-main/.title-sub/.title-desc；整体上移见 .hero-text-block 的 margin-top） -->
+      <div class="hero-text-block font-title-en max-w-2xl">
+        <h1 id="Home" class="title-main tracking-tight mb-2">
+          Flowing Wheat Fields
+        </h1>
+        <p class="title-sub mb-10">
+          Ecological Art Short Film.
+        </p>
+        <p class="title-desc max-w-xl mb-8">
+          How does the relationship between humans and seeds affect food security, ecosystems and biodiversity?
+        </p>
+      </div>
+      <!-- 同一行：左侧 MORE / OTHER PROJECTS，右侧 Keywords / Visual Design / Dynamic Images，底部对齐 -->
+      <div class="flex flex-wrap justify-between items-end gap-4">
+        <div class="flex flex-wrap gap-3 sm:gap-4 items-center">
+          <a href="#" class="footer-btn liquid-glass-footer inline-flex items-center gap-2 text-white font-medium hover:bg-white/10 transition">
+          2023  — 
+          </a>
+          <a href="#" class="footer-btn liquid-glass-footer inline-flex items-center gap-2 text-white font-medium hover:bg-white/10 transition">
+          —   2026 
+          </a>
+        </div>
+        <div class="flex flex-wrap gap-2 sm:gap-3 items-center">
+          <a href="#" class="footer-btn liquid-glass-footer inline-flex items-center gap-2 text-white font-medium hover:bg-white/10 transition">Keywords:</a>
+          <a href="#" class="footer-btn liquid-glass-footer inline-flex items-center gap-2 text-white font-medium hover:bg-white/10 transition">Visual Design</a>
+          <a href="#" class="footer-btn liquid-glass-footer inline-flex items-center gap-2 text-white font-medium hover:bg-white/10 transition">Dynamic Images</a>
+        </div>
+      </div>
+      </div>
+    </footer>
+  </section>
+  
+  <!-- 主内容：教育背景 / 获奖经历 / Latest Projects（向下滚动即可看到，与首屏同一画布） -->
+  <main class="relative z-20 bg-black pt-[96px]">
+    <!-- 中部个人介绍：左侧教育与获奖时间线（与 MORE 左对齐），右侧人物照片与简介 -->
+    <section id="profile" class="profile-section profile-section-with-video w-full pt-24 pb-24">
+      <video
+        class="video-backdrop-middle video-no-controls"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        disablePictureInPicture
+        disableRemotePlayback
+        aria-hidden="true"
+      >
+        <source src="" type="video/mp4">
+      </video>
+      <div class="profile-section-content grid gap-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <!-- 左：教育背景 + 获奖经历 编组（长宽见 .profile-content-group） -->
+        <div class="profile-content-group space-y-12">
+          <!-- Educational Background -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="section-title font-en tracking-[0.16em] uppercase">Educational Background</h2>
+              <div class="flex flex-wrap gap-3">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <div class="h-px bg-white/30"></div>
+            <div class="mt-6 space-y-4">
+              <!-- 教育经历行 1 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/90">
+                      中央美术学院 · 产品设计学士
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Central Academy of Fine Arts · Bachelor of Product Design
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2020.09 — 2024.07
+                  </p>
+                </div>
+              </div>
+
+              <!-- 预留未来进修 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/90">
+                      香港理工大学 · 智能服务设计研究生
+                    </p>
+                    <p class="font-en text-xs text-white/70 leading-relaxed">
+                      Future Postgraduate Studies · Interaction &amp; Visual Design (Planning)
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2025.09 — 2026.07
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Awards and Honors Experience -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="section-title font-en tracking-[0.16em] uppercase">Awards and Honors Experience</h2>
+            </div>
+            <div class="h-px bg-white/30"></div>
+
+            <div class="mt-6 space-y-4">
+              <!-- 奖项 1 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/90">
+                      2024新西兰设计师佳作奖
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      2024 New Zealand Designers Awards · Honorable Mention
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2024
+                  </p>
+                </div>
+              </div>
+
+              <!-- 奖项 2 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/85">
+                      第十四届全国美术作品展览（进京作品）
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Outstanding Graduation Project, CAFA · “Flowing Wheat Fields”
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2024
+                  </p>
+                </div>
+              </div>
+
+              <!-- 奖项 3 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/80">
+                      中国设计智造大奖佳作奖（院级）
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Excellent Award, 3rd China University Design Exhibition
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2024
+                  </p>
+                </div>
+              </div>
+
+              <!-- 奖项 4 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/80">
+                      北京青年设计榜优秀青年设计师（市级）
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Bronze Award, “Seeds of Future” Young Visual Design Contest
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2024
+                  </p>
+                </div>
+              </div>
+
+              <!-- 奖项 5 -->
+              <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/80">
+                      ICCC国际学生设计大赛奖
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Academic Scholarship (Second Class), CAFA
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2024
+                  </p>
+                </div>
+              </div>
+
+               <!-- 奖项 6 -->
+               <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/80">
+                      第三届+86国际食物设计大赛优秀奖（省级）
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Academic Scholarship (Second Class), CAFA
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2023
+                  </p>
+                </div>
+              </div>
+
+               <!-- 奖项 7 -->
+               <div class="liquid-hover-pill">
+                <div class="liquid-hover-pill-inner flex items-center justify-between px-5 py-3">
+                  <div class="space-y-1">
+                    <p class="font-cn text-[14px] leading-relaxed text-white/80">
+                      中央美术学院学生奖学金&校级优秀作业
+                    </p>
+                    <p class="font-en text-xs text-white/60 leading-relaxed">
+                      Academic Scholarship (Second Class), CAFA
+                    </p>
+                  </div>
+                  <p class="font-en text-[14px] text-white/70 tracking-[0.18em] uppercase">
+                    2022
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右：人物照片与个人简介（1:1 还原参考图尺寸与排版） -->
+        <aside class="profile-photo-group flex flex-col items-center w-full max-w-[320px] mx-auto lg:mx-0 lg:ml-auto gap-6">
+          <!-- 人物照片 -->
+          <div class="rounded-[16px] overflow-hidden w-full">
+            <img src="人物照片.jpg" alt="人物照片" class="w-full aspect-[2/3] max-h-[420px] object-cover object-top">
+          </div>
+
+          <!-- 姓名 + 联系方式 + 职位（右对齐，与白线相隔 w11） -->
+          <div class="flex items-stretch gap-[11px] w-full justify-end">
+            <div class="flex flex-col gap-1.5 text-right flex-shrink-0">
+              <p class="font-cn text-[17px] font-semibold leading-tight text-white">
+                王露 <span class="font-en tracking-[0.12em] uppercase ml-0.5">WANG LU</span>
+              </p>
+              <p class="font-en text-[13px] text-white leading-relaxed">
+                15660060953 | 15660060953@163.com
+              </p>
+              <p class="font-cn text-[12px] text-white leading-relaxed">
+                创意视觉AIGC设计师 / UI&UX设计师 / 策展人
+              </p>
+            </div>
+            <div class="w-1 flex-shrink-0 rounded-full bg-[#d3d3d3] min-h-[70px] self-center"></div>
+          </div>
+
+          <!-- Row 1+2: 左列 LELTS 胶囊 + INTER/2002 仪表盘（对齐）| 右列 Major Course -->
+          <div class="grid grid-cols-[auto_1fr] gap-3 w-full items-start">
+            <!-- 左列：LELTS 胶囊 + 下方两个仪表盘 -->
+            <div class="flex flex-col gap-3">
+              <!-- LELTS W155×H70 -->
+              <div class="widget-ios262 w-[165px] h-[70px] px-4 py-3 flex flex-row items-center gap-4 box-border -translate-x-7">
+                <span class="widget-en-circle font-en flex-shrink-0">En</span>
+                <div class="flex flex-col justify-center gap-0.5 min-w-0">
+                  <span class="font-en text-[15px] font-medium text-white leading-tight">LELTS</span>
+                  <span class="font-en text-[14px] font-normal text-[#AAAAAA] leading-tight">6.0</span>
+                </div>
+              </div>
+              <!-- INTER + 2002 仪表盘 W58×H55，与胶囊左对齐 -->
+              <div class="flex gap-3.5 -translate-x-8">
+
+                <div class="flex flex-col items-center gap-1.5">
+                  <div class="relative w-[80px] h-[80px] flex items-center justify-center">
+                    <svg viewBox="0 0 80 80" class="absolute inset-0 w-full h-full">
+                      <path d="M 18 62 A 32 32 0 1 1 62 62" class="gauge-arc" 
+                      stroke-width="6" 
+                      fill="none" 
+                      stroke="#444" 
+                      stroke-linecap="round" />
+                      <circle cx="62" cy="18" r="4.5" class="gauge-dot" fill="#fff" />
+                    </svg>
+                    <span class="font-en text-[32px] font-medium text-white relative z-10">2</span>
+                  </div>
+                  <span class="font-en text-[12px] font-medium text-white tracking-wider -mt-5">INTER</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-1.5">
+                  <div class="relative w-[80px] h-[80px] flex items-center justify-center">
+                    <svg viewBox="0 0 80 80" class="absolute inset-0 w-full h-full">
+                      <path d="M 18 62 A 32 32 0 1 1 62 62" class="gauge-arc" 
+                      stroke-width="6" 
+                      fill="none" 
+                      stroke="#444" 
+                      stroke-linecap="round" />
+                      <circle cx="62" cy="18" r="4.5" class="gauge-dot" fill="#fff" />
+                    </svg>
+                    <span class="font-en text-[31px] font-medium text-white relative z-10">24</span>
+                  </div> 
+                  <span class="font-en text-[12.5px] font-medium text-white tracking-wider -mt-5">2002</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右列：Major Course W171×H160 -->
+            <div class="widget-ios262 w-[171px] h-[160px] p-4 flex flex-col gap-3 box-border -translate-x-8">
+              <span class="font-en text-[15px] font-semibold text-white">Major Course</span>
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-2.5">
+                  <span class="widget-radio-dot"></span>
+                  <span class="font-en text-[14px] text-[#ccc]">UI/UX Design</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="widget-radio-dot"></span>
+                  <span class="font-en text-[14px] text-[#ccc]">Visual Design</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="widget-radio-dot"></span>
+                  <span class="font-en text-[14px] text-[#ccc]">Exhibition</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+          <!-- Professional Skills -->
+          <div class="widget-ios262 w-[350px] min-h-[190px] p-5 pb-3 flex flex-col -translate-x-2">
+              <span class="font-en text-[20px] font-medium text-white/90 block mb-3">Professional Skills</span>
+              
+              <div class="grid grid-cols-3 border-t border-white/40 flex-1 relative">
+                
+                <div class="absolute top-0 bottom-0 left-[33.3%] border-l border-dashed border-white/30 -translate-x-3"></div>
+                <div class="absolute top-0 bottom-0 left-[66.6%] border-l border-dashed border-white/30"></div>
+            
+                <div class="pt-3 flex flex-col items-start border-b border-white/40 pb-3 pl-4">
+                  <div class="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#FF9A00] text-[12px] font-bold -translate-x-1.5">Ai</div>
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#FF00FF] text-[12px] font-bold -translate-x-1.5">Xd</div>
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#00A7FF] text-[12px] font-bold -translate-x-1.5">Ps</div>
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#7A00FF] text-[12px] font-bold -translate-x-1.5">Pr</div>
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#A259FF] text-[12px] font-bold -translate-x-1.5">Fi</div>
+                    <div class="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center text-[#FF3A5C] text-[12px] font-bold -translate-x-1.5">Id</div>
+                  </div>
+                </div>
+            
+                <div class="pt-3 flex flex-col items-start border-b border-white/40 pb-3 pl-2">
+                  <div class="flex flex-wrap justify-start gap-x-1 gap-y-2">
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Kimi</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Github</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Midjourney</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Canva</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Chatgpt</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Gemini</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Deepseek</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none -translate-x-2">Cursor</span>
+                  </div>
+                </div>
+            
+                <div class="pt-3 flex flex-col items-start border-b border-white/40 pb-3 pl-2">
+                  <div class="flex flex-wrap justify-start gap-x-1 gap-y-2">
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none translate-x-1">Keyshot</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none translate-x-1">Rhino</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none translate-x-1">可灵AI</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none translate-x-1">Tapnow</span>
+                    <span class="px-1.5 py-0.5 rounded-sm bg-white/10 text-[8px] text-white/70 leading-none translate-x-1">即梦AI</span>
+                  </div>
+                </div>
+            
+                <div class="py-2 flex justify-center items-center">
+                  <span class="font-medium text-[10px] text-white/80 uppercase tracking-[0.2em]">Adobe</span>
+                </div>
+                <div class="py-2 flex justify-center items-center">
+                  <span class="font-medium text-[10px] text-white/80 uppercase tracking-[0.2em] -translate-x-1">AIGC</span>
+                </div>
+                <div class="py-2 flex justify-center items-center">
+                  <span class="font-medium text-[10px] text-white/80 uppercase tracking-[0.2em] whitespace-nowrap">3D / Video</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+      </div>
+    </section>
+
+    <!-- Latest Projects 模块：与中间部分（教育/获奖）左右对齐 -->
+    <section id="latest-projects" class="profile-section w-full pb-28">
+      <!-- 标题与上方 1px 分割线 -->
+      <div class="mb-8">
+        <h2 id="projects" class="section-title font-en tracking-[0.16em] uppercase">Latest Projects</h2>
+        <div class="h-px bg-white/30 mt-4"></div>
+      </div>
+
+      <!-- 四个液态玻璃筛选按钮 -->
+      <div class="flex flex-wrap gap-3 mb-10">
+        <button class="pill-filter px-4 py-1.5 capsule-en">
+          UI Design
+        </button>
+        <button class="pill-filter px-4 py-1.5 capsule-en">
+          Creative Dynamic Videos
+        </button>
+        <button class="pill-filter px-4 py-1.5 capsule-en">
+          Brand Design
+        </button>
+        <button class="pill-filter px-4 py-1.5 capsule-en">
+          Exhibition Design
+        </button>
+      </div>
+
+      <!-- 横向滑动项目列表：悬停暂停自动播放 -->
+      <div class="relative" data-projects-wrapper>
+        <div class="projects-scroll overflow-x-auto fade-loop" data-projects-scroll>
+          <div class="flex gap-10 pr-10 items-start">
+            
+            <article class="project-card flex-none w-[696px]">
+              <a href="project-毕设.html" class="block w-full h-[677.5px] rounded-[0px] bg-black/40">
+                <img src="project-01-flowing-wheat-fields.jpg" alt="Flowing Wheat Fields" class="project-card-img w-full h-full object-cover">
+              </a>
+              <div class="project-card-text mt-4 leading-[22px]">
+                <h3 class="font-en text-[13px] font-light text-white/95">
+                  Dynamic Visual Design of Information Archives
+                </h3>
+                <p class="mt-1 font-en text-[12px] font-Regular text-white/80">流动的麦田（2024毕业设计）信息档案动态视觉设计</p>
+                </p>
+              </div>
+            </article>
+
+            <div class="flex flex-col gap-10">
+              <article class="project-card w-[520px]">
+                <a href="project-urban-void.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 3.jpg" alt="Urban Void" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Design of Global Information Map of Food</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">食物地理学-全球信息化图谱（2024入选全国美展进京作品）</p>
+                </div>
+              </article>
+
+              <article class="project-card w-[520px]">
+                <a href="project-IOS.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 12_副本.jpg" alt="Smart Seed" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">UI interface Design, Website Construction, and Transcoding Applications</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">毕设影片·延伸部分：结合IOS视觉的UI界面设计、网站搭建、转码应用</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="flex flex-col gap-10">
+              <article class="project-card w-[520px]">
+                <a href="project顺丰.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 6.jpg" alt="Aerial Path" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Aerial Path · Brand Planning Comprehensive Project</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">香港理工·顺丰 无人机运输品牌展览策划全案</p>
+                </div>
+              </article>
+
+              <article class="project-card w-[520px]">
+                <a href="Petalife.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 10.jpg" alt="Immersive Forest" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">UI/UX Optimization Design Plan</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">港理工 x Petlife 上线APP的UI/UX优化设计方案</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="flex flex-col gap-10">
+              <article class="project-card w-[520px]">
+                <a href="project-图集.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 11.png" alt="Quanting Relit" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Collection of past excellent Keynote/Mapping layout images</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">过往精彩Keynote/Mapping排版图片集合</p>
+                </div>
+              </article>
+
+              <article class="project-card w-[520px]">
+                <a href="project-之间.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 7.jpg" alt="Light Garden" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Catering Brand · Creative Visual Design Project Collection</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">餐饮品牌·创意视觉设计已落地项目整理</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="flex flex-col gap-10">
+              <article class="project-card w-[520px]">
+                <a href="展览1.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 11.jpg" alt="Digital Ocean Field" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Un·Future Ecological Vision Plan Exhibition Planning Project</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">未·未来 生态远见计划展览策划项目（全景展览平面图绘制、艺术家作品制作）</p>
+                </div>
+              </article>
+
+              <!-- 新增项目：与右侧下排对齐 -->
+              <article class="project-card w-[520px]">
+                <a href="展览2.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 11_副本.jpg" alt="Extended Ocean Field" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Exhibition Design</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">互动墙与用户体验流程、展板、展览海报设计</p>
+              </article>
+            </div>
+
+            <!-- 新增：第一行最右 + 第二行最右 各 1 个 520×287 项目 -->
+            <div class="flex flex-col gap-10 flex-none">
+              <article class="project-card w-[520px]">
+                <a href="project图书馆.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="Rectangle 12.jpg" alt="Project 10" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">Library User Experience Process Optimization Service Design</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">香港理工大学图书馆用户体验流程优化服务设计</p>
+                </div>
+              </article>
+              <article class="project-card w-[520px]">
+                <a href="project-超时土壤.html" class="block w-full h-[287px] rounded-[0px] bg-black/40">
+                  <img src="截屏2026-02-15 17.06.55.png" alt="Project 11" class="project-card-img w-full h-full object-cover">
+                </a>
+                <div class="project-card-text mt-4 leading-[22px]">
+                  <h3 class="font-en text-[13px] font-light text-white/95">The Entire Process from Model Construction to Implementation</h3>
+                  <p class="mt-1 font-en text-[12px] font-Regular text-white/80">央美小组毕设｜Beyond Soil 超时土壤</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 交互脚本：自定义光标跟随 + Latest Projects 左右滑动 -->
+  <script>
+    /* 自定义光标：圆形液态玻璃跟随鼠标 */
+    (function () {
+      const cursor = document.getElementById('cursor-glass');
+      if (!cursor) return;
+      let x = 0, y = 0, rx = 0, ry = 0;
+      const smooth = 0.52;  /* 灵敏程度：越大越跟手，0.5-0.6 较灵敏，0.8-1 几乎即时 */
+      function update() {
+        rx += (x - rx) * smooth;
+        ry += (y - ry) * smooth;
+        cursor.style.left = rx + 'px';
+        cursor.style.top = ry + 'px';
+        requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+      document.addEventListener('mousemove', function (e) {
+        x = e.clientX;
+        y = e.clientY;
+        cursor.style.opacity = '1';
+      });
+      document.addEventListener('mouseout', function (e) {
+        if (!e.relatedTarget || !document.documentElement.contains(e.relatedTarget)) {
+          cursor.style.opacity = '0';
+        }
+      });
+      document.addEventListener('mousedown', function () { cursor.classList.add('cursor-active'); });
+      document.addEventListener('mouseup', function () { cursor.classList.remove('cursor-active'); });
+      cursor.style.opacity = '0';
+    })();
+
+    (function () {
+      const scrollContainer = document.querySelector('[data-projects-scroll]');
+      const wrapper = document.querySelector('[data-projects-wrapper]');
+      const btnLeft = document.querySelector('[data-scroll-left]');
+      const track = scrollContainer ? scrollContainer.querySelector('.flex') : null;
+
+       // ========== 自动播放：改下面两个变量调节速度 ==========
+       const AUTO_SCROLL_PX = 2;       /* 每次滚动的像素：1-5 适中，越大越快 */
+      const AUTO_SCROLL_MS = 35;      /* 间隔毫秒：越小越快，30-50 适中 */
+
+      let autoPlayTimer = null;
+      let isHovering = false;
+      let loopWidth = 0;              /* 原始内容宽度，用于无缝循环 */
+
+      if (scrollContainer && track) {
+        // 只在同一行里克隆每个卡片，避免多出一整排在下面
+        const originalWidth = track.scrollWidth;
+        const clone = track.cloneNode(true);
+        // 将克隆出的子元素追加到原 track 内部（而不是作为兄弟节点）
+        while (clone.firstElementChild) {
+          track.appendChild(clone.firstElementChild);
+        }
+        loopWidth = originalWidth;
+      }
+
+      function startAutoPlay() {
+        if (autoPlayTimer || !scrollContainer || isHovering) return;
+        autoPlayTimer = setInterval(function () {
+          if (!scrollContainer || isHovering || !loopWidth) return;
+          const maxScroll = loopWidth;
+          if (scrollContainer.scrollLeft >= maxScroll) {
+            /* 到达第一轮末尾后，瞬间回绕到开头，实现无缝循环 */
+            scrollContainer.scrollLeft -= maxScroll;
+          }
+          scrollContainer.scrollLeft += AUTO_SCROLL_PX;
+        }, AUTO_SCROLL_MS);
+      }
+
+      function stopAutoPlay() {
+        if (autoPlayTimer) {
+          clearInterval(autoPlayTimer);
+          autoPlayTimer = null;
+        }
+      }
+
+      if (wrapper && scrollContainer) {
+        wrapper.addEventListener('mouseenter', function () {
+          isHovering = true;
+          stopAutoPlay();
+        });
+        wrapper.addEventListener('mouseleave', function () {
+          isHovering = false;
+          startAutoPlay();
+        });
+        startAutoPlay();
+      }
+
+      function scrollByAmount(amount) {
+        if (!scrollContainer) return;
+        scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
+      }
+
+      const btnRight = document.querySelector('[data-scroll-right]');
+      if (btnLeft) btnLeft.addEventListener('click', function () { scrollByAmount(-720); });
+      if (btnRight) btnRight.addEventListener('click', function () { scrollByAmount(720); });
+    })();
+  </script>
+
+<script>
+  // 强制接管所有带 # 的链接跳转
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth' // 这里强制要求丝滑滚动
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
