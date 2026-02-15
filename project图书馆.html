@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Void — ADELE LU</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background: #000; 
+      color: #fff; 
+      margin: 0; 
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-cn { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    
+    .container-safe {
+      width: 100%;
+      max-width: 1790px;
+      margin: 0 auto;
+      padding: 0 77px;
+    }
+
+    /* 顶部视频 */
+    .hero-video-container {
+      width: 1636px;
+      height: 847px;
+      margin: 40px auto 0;
+      overflow: hidden;
+      background: #111;
+    }
+    .hero-video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+    }
+
+    /* --- 动画 CSS --- */
+    .reveal-text {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-text.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-300 { transition-delay: 300ms; }
+
+    /* 图片基础样式 */
+    .clickable-img { cursor: zoom-in; transition: opacity 0.3s ease; }
+    .clickable-img:hover { opacity: 0.9; }
+    
+    .detail-img { width: 804px; height: 485px; object-fit: cover; }
+    .bottom-img-standard { width: 100%; max-width: 1636px; height: auto; display: block; margin: 0 auto; }
+
+    /* --- 长图滑动容器样式 --- */
+    .scroll-outer-wrapper {
+      width: 100%;
+      max-width: 1636px;
+      margin: 40px auto 0;
+    }
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      cursor: grab;
+      background: #0a0a0a;
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: #333 #000;
+    }
+    /* 自定义滚动条 Chrome/Safari */
+    .scroll-container::-webkit-scrollbar { height: 4px; }
+    .scroll-container::-webkit-scrollbar-track { background: #000; }
+    .scroll-container::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+    
+    .scroll-image {
+      height: 450px; /* 控制显示高度，宽度会根据3573:811比例自动拉伸 */
+      max-width: none;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .scroll-container:active { cursor: grabbing; }
+
+    /* 放大查看全屏样式 */
+    .zoomed {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: auto !important; height: auto !important;
+      max-width: 95vw !important; max-height: 95vh !important;
+      z-index: 9999; cursor: zoom-out;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.95); 
+    }
+
+    .glass-btn {
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 12px 32px; font-size: 13px; font-weight: 500;
+      transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+    }
+    .glass-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+    .detail-label { font-weight: 600; font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
+    .detail-value { color: rgba(255, 255, 255, 0.6); font-size: 16px; line-height: 1.6; }
+  </style>
+</head>
+<body class="pb-24">
+
+  <section class="hero-video-container">
+    <video src="cbd1d6d66502407998d57fa507ee6e63.mp4" autoplay muted loop playsinline controls></video>
+  </section>
+
+  <main class="container-safe">
+    
+    <div class="grid grid-cols-12 gap-8 items-start" style="margin-top: 172px;">
+      <div class="col-span-4">
+        <h1 class="text-[20px] font-medium tracking-tight leading-[1.4]">
+          User Experience Design Optimization Plan for PolyU Library<br>
+          <span class="font-cn">Polyu 图书馆用户体验设计优化方案</span>
+        </h1>
+      </div>
+      <div class="col-span-5 ml-20">
+        <h2 class="detail-label">Intro/介绍:</h2>
+        <p class="detail-value max-w-[450px]">
+          本项目旨在招募志愿者，优化图书馆的日常运营与资源管理工作流程，使老师与学生用户群体得到更好的服务和用户体验。核心目标是维护图书馆作为公共学习空间的环境与秩序。志愿者的工作主要围绕馆藏资源展开，包括参与图书的整理、上架、维护等工作，以确保读者能够便捷地获取所需资料。通过参与本项目，志愿者可以深入了解图书馆的运作流程，并获得相关的实践技能。项目为校内师生提供了一个参与公共事务、服务校园社区的实践平台。
+        </p>
+      </div>
+      <div class="col-span-3 space-y-6 ml-20">
+        <div><h2 class="detail-label">Year/年份:</h2><p class="detail-value">2025</p></div>
+        <div><h2 class="detail-label">Location/地点:</h2><p class="detail-value">Hongkong, China</p></div>
+        <div><h2 class="detail-label">Form/形式:</h2><p class="detail-value">Videos, ，UX Model Design</p></div>
+      </div>
+    </div>
+
+    <section class="flex items-center justify-center text-center" style="height: 600px; margin-top: 200px; margin-bottom: 240px;">
+        <div style="max-width: 1200px;"> 
+            <h2 class="font-cn font-light tracking-wide reveal-text" 
+                style="font-size: 50px; line-height: 65px; margin-bottom: 40px;"> 
+                如何通过优化志愿者管理机制，在提升图书馆资源流转效率的同时，构建更优质的校园公共学习生态？
+            </h2>
+            <span class="reveal-text delay-300" 
+                  style="font-family: 'Inter'; font-size: 40px; opacity: 0.8; display: block; line-height: 54px; margin-top: 30px;">
+                  How can we optimize the volunteer management mechanism to enhance the efficiency of library resource circulation while building a better campus public learning ecosystem?
+            </span>
+        </div>  
+    </section>
+
+    <div class="mt-30">
+        <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">
+          Redesign Concept Formation Redesign 概念形成 
+        </h2>
+        <div class="w-full h-[1px] bg-white/70"></div>
+
+    <div class="flex justify-between items-start mt-20">
+      <div class="flex flex-col gap-4"> 
+        <img src="截屏2025-12-29 16.03.52_副本.png" class="detail-img clickable-img" alt="Detail Left" onclick="toggleZoom(this)">
+        <p class="text-[14px] text-white/90 uppercase">
+          用户体验 线上/线下规划草图 User Experience Online/Offline Planning Sketch
+        </p>
+      </div>
+      <div class="flex flex-col gap-4">
+        <img src="Group 1171275036.jpg" class="detail-img clickable-img" alt="Detail Right" onclick="toggleZoom(this)">
+        <p class="text-[14px] text-white/90 uppercase">
+          概念形成图谱 Concept formation schema
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-60">
+      <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">
+        Detailed Introduction 详细介绍 
+      </h2>
+      <div class="w-full h-[1px] bg-white/70"></div>
+      <div class="mt-10">
+        <img src="Group 1171275033.jpg" class="bottom-img-standard clickable-img" alt="Detailed Info" onclick="toggleZoom(this)">
+      </div>
+    </div>
+    <div class="w-full h-[1px] bg-white/70"></div>
+      <div class="mt-10">
+        <img src="Group 30.jpg" class="bottom-img-standard clickable-img" alt="Detailed Info" onclick="toggleZoom(this)">
+      </div>
+    </div>
+    <div class="w-full h-[1px] bg-white/70"></div>
+      <div class="mt-10">
+        <img src="Group 1171275031.jpg" class="bottom-img-standard clickable-img" alt="Detailed Info" onclick="toggleZoom(this)">
+      </div>
+    </div>
+
+   
+    
+
+    <div class="flex justify-center gap-6" style="margin-top: 120px;">
+      <a href="index.html" class="glass-btn">Home</a>
+      <a href="index.html#latest-projects" class="glass-btn">All Projects</a>
+    </div>
+
+  </main>
+
+  <script>
+    // 动画触发脚本
+    const observerOptions = { threshold: 0.2 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+
+    // 图片放大脚本
+    function toggleZoom(img) {
+      img.classList.toggle('zoomed');
+      document.body.style.overflow = img.classList.contains('zoomed') ? 'hidden' : 'auto';
+    }
+
+    // Esc 退出放大
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const zoomedImg = document.querySelector('.clickable-img.zoomed');
+        if (zoomedImg) toggleZoom(zoomedImg);
+      }
+    });
+
+    // --- 新增：鼠标拖拽滑动逻辑 ---
+    const slider = document.getElementById('dragScroll');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2.5; // 调节滑动系数
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+</body>
+</html>

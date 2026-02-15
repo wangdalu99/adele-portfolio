@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Void — ADELE LU</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background: #000; 
+      color: #fff; 
+      margin: 0; 
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-cn { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    
+    .container-safe {
+      width: 100%;
+      max-width: 1790px;
+      margin: 0 auto;
+      padding: 0 77px;
+    }
+
+    /* --- 顶部三卡片交互区域 (还原所有样式) --- */
+    .hero-wrapper {
+      width: 100%;
+      height: 900px; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .hero-card-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 200px; 
+    }
+
+    /* 还原出场动画初始状态 */
+    .hero-card {
+      position: relative;
+      width: 370px;
+      height: 668px;
+      border-radius: 29px;
+      overflow: hidden;
+      background: #1a1a1a; 
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      
+      opacity: 0;
+      transform: translateY(100px) scale(0.9);
+      filter: blur(20px);
+
+      transition: 
+        width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+        height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.5s ease,
+        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+        filter 0.8s ease;
+    }
+
+    /* 还原动画触发指令 */
+    .hero-card.appear {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .hero-card video, .hero-card img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    /* 还原悬停联动效果 */
+    .hero-card-container:hover .hero-card:not(.landscape) { opacity: 0.64; }
+    .hero-card:hover:not(.landscape) {
+      width: 433px; height: 781px; opacity: 1 !important; z-index: 15;
+    }
+
+    /* 还原剧场模式 */
+    .bg-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); opacity: 0; pointer-events: none;
+      transition: opacity 0.6s ease; z-index: 50;
+    }
+    .bg-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .hero-card.landscape {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 1100px !important; height: 618px !important;
+      z-index: 100; opacity: 1 !important; border-radius: 20px;
+      box-shadow: 0 40px 120px rgba(0,0,0,1);
+    }
+
+    /* --- 通用文字动画与图片样式 --- */
+    .reveal-text {
+      opacity: 0; transform: translateY(30px);
+      transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-text.active { opacity: 1; transform: translateY(0); }
+    .delay-300 { transition-delay: 300ms; }
+    
+    .clickable-img { cursor: zoom-in; transition: opacity 0.3s ease; }
+    .detail-img { width: 804px; height: 485px; object-fit: cover; }
+    .bottom-img-standard { width: 100%; max-width: 1636px; height: auto; display: block; margin: 0 auto; }
+    
+    .zoomed { 
+      position: fixed !important; top: 50% !important; left: 50% !important; 
+      transform: translate(-50%, -50%) !important; z-index: 9999; cursor: zoom-out; 
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.95); 
+    }
+
+    /* --- 还原底部按钮样式 --- */
+    .glass-btn { 
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+      background: rgba(255, 255, 255, 0.1); border: 0.5px solid rgba(255, 255, 255, 0.2); 
+      border-radius: 999px; padding: 12px 32px; font-size: 13px; font-weight: 500; 
+      transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9); text-decoration: none; 
+    }
+    .glass-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+    .detail-label { font-weight: 600; font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
+    .detail-value { color: rgba(255, 255, 255, 0.6); font-size: 16px; line-height: 1.6; }
+
+    /* --- 长图滚动核心容器 --- */
+    .scroll-container {
+      width: 100%; overflow-x: auto; white-space: nowrap; 
+      margin-top: 35px; scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .scroll-container::-webkit-scrollbar { display: none; }
+    .long-scroll-img {
+      height: auto; width: auto; max-width: none !important; 
+      display: inline-block; border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="pb-24">
+
+  <div class="bg-overlay" id="overlay" onclick="closeTheater()"></div>
+
+  <section class="hero-wrapper">
+    <div class="hero-card-container">
+      <div class="hero-card" id="card-1">
+        <video controls playsinline poster="截屏2026-02-15 17.06.37.png">
+          <source src="土壤 竖.mov" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero-card" id="card-2">
+        <img src="a146c26f57f19941343dc431a9ddfbfe.jpg" alt="Center Artwork">
+      </div>
+      <div class="hero-card" id="card-3" onclick="openTheater(this)">
+        <video id="landscapeVideo" controls playsinline poster="截屏2026-02-15 17.06.55.png">
+          <source src="2023-11-21 173247 1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <main class="container-safe">
+    <div class="grid grid-cols-12 gap-8 items-start" style="margin-top: 100px;">
+        <div class="col-span-4">
+          <h1 class="text-[20px] font-medium tracking-tight leading-[1.6]">
+            Central Academy of Fine Arts Group Project<br>
+            <span class="font-cn"> 央美小组毕设｜Beyond Soil 超时土壤</span>
+          </h1>
+        </div>
+        <div class="col-span-5 ml-20">
+          <h2 class="detail-label">Intro/介绍:</h2>
+          <p class="detail-value max-w-[450px]">
+            Beyond Soil 以土壤中的放射性元素半衰期作为主要线索，设计“后辐射时代”下食物消费机制的蓝图。
+          </p>
+        </div>
+        <div class="col-span-3 space-y-6 ml-20">
+          <div><h2 class="detail-label">Year/年份:</h2><p class="detail-value">2023</p></div>
+          <div><h2 class="detail-label">Location/地点:</h2><p class="detail-value">Beijing, China</p></div>
+          <div><h2 class="detail-label">Form/形式:</h2><p class="detail-value">Videos, Mapping, UI/UX Design</p></div>
+        </div>
+    </div>
+
+    <section class="flex items-center justify-center text-center" style="height: 600px; margin-top: 200px;">
+        <div style="max-width: 1200px;"> 
+            <h2 class="font-cn font-light tracking-wide reveal-text" style="font-size: 50px; line-height: 65px; margin-bottom: 40px;"> 
+              从最初的核废水排海到人类食物系统的聚变，怎么也不会想到海洋核辐射中某一个放射性元素会影响到整个土壤系统的改变。
+            </h2>
+            <span class="reveal-text delay-300" style="font-family: 'Inter'; font-size: 40px; opacity: 0.8; display: block; line-height: 54px; margin-top: 30px;">
+              From ocean discharge to soil collapse: one isotope’s journey from sea to land.
+            </span>
+        </div>  
+    </section>
+
+    <div style="margin-top:200px; margin-bottom:300px;">
+        <img src="可放滑动的最后一张）.jpg" class="w-full h-auto clickable-img" alt="Logic Diagram" onclick="toggleZoom(this)">
+    </div>
+
+    <div class="mt-60" style="margin-top: 100px;">
+        <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">Discussion Highlights 讨论花絮</h2>
+        <div class="w-full h-[1px] bg-white/70"></div>
+        <div class="flex justify-between items-start mt-20">
+          <div class="flex flex-col gap-4"> 
+            <img src="WechatIMG1606.jpg" class="detail-img clickable-img" alt="Detail Left" onclick="toggleZoom(this)">
+            <p class="text-[14px] text-white/90 uppercase">Discussion Highlights 1</p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <img src="工作坊讨论.jpg" class="detail-img clickable-img" alt="Detail Right" onclick="toggleZoom(this)">
+            <p class="text-[14px] text-white/90 uppercase">Discussion Highlights 2</p>
+          </div>
+        </div>
+    </div>
+
+    <div class="mt-60">
+      <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">Detailed Introduction 详细介绍</h2>
+      <div class="w-full h-[1px] bg-white/70"></div>
+      <div class="mt-10">
+        <img src="截屏2026-02-15 17.14.08.png" class="bottom-img-standard clickable-img" id="reference-img" alt="Detailed Info" onclick="toggleZoom(this)">
+        
+        <div class="scroll-container">
+          <img src="Group 1171275039.jpg" class="long-scroll-img clickable-img" alt="Experimental Plan" onclick="toggleZoom(this)">
+        </div>
+        
+        <div class="scroll-container">
+          <img src="Group 1171275037.jpg" class="long-scroll-img clickable-img" alt="Exhibition View" onclick="toggleZoom(this)">
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-6" style="margin-top: 120px;">
+      <a href="index.html" class="glass-btn">Home</a>
+      <a href="index.html#latest-projects" class="glass-btn">All Projects</a>
+    </div>
+  </main>
+
+  <script>
+    // 1. 卡片入场动画还原
+    window.addEventListener('DOMContentLoaded', () => {
+      const cards = [document.getElementById('card-1'), document.getElementById('card-2'), document.getElementById('card-3')];
+      cards.forEach((card, index) => {
+        setTimeout(() => { card.classList.add('appear'); }, 300 + (index * 200));
+      });
+    });
+
+    // 2. 长图高度自动对齐
+    const alignHeight = () => {
+      const refImg = document.getElementById('reference-img');
+      const longImgs = document.querySelectorAll('.long-scroll-img');
+      if(refImg && refImg.clientHeight > 0) {
+        longImgs.forEach(img => img.style.height = refImg.clientHeight + "px");
+      }
+    };
+    window.addEventListener('load', alignHeight);
+    window.addEventListener('resize', alignHeight);
+
+    // 3. 剧场模式还原
+    function openTheater(card) {
+      if (card.classList.contains('landscape')) return;
+      document.getElementById('overlay').classList.add('active');
+      card.classList.add('landscape');
+      const video = card.querySelector('video');
+      setTimeout(() => { video.play().catch(e => {}); }, 700);
+    }
+    function closeTheater() {
+      const activeCard = document.querySelector('.hero-card.landscape');
+      if (activeCard) {
+        activeCard.classList.remove('landscape');
+        document.getElementById('overlay').classList.remove('active');
+        activeCard.querySelector('video').pause();
+      }
+    }
+
+    // 4. 其余交互逻辑还原
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+
+    function toggleZoom(img) {
+      img.classList.toggle('zoomed');
+      document.body.style.overflow = img.classList.contains('zoomed') ? 'hidden' : 'auto';
+    }
+  </script>
+</body>
+</html>
