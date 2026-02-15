@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Void — ADELE LU</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background: #000; 
+      color: #fff; 
+      margin: 0; 
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-cn { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    
+    .container-safe {
+      width: 100%;
+      max-width: 1790px;
+      margin: 0 auto;
+      padding: 0 77px;
+    }
+
+    /* 顶部媒体容器 */
+    .hero-media-container {
+      width: 1636px;
+      height: 847px;
+      margin: 40px auto 0;
+      overflow: hidden;
+      background: #111;
+    }
+    .hero-media-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+    }
+
+    /* 动画 */
+    .reveal-text {
+      opacity: 0; transform: translateY(30px);
+      transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-text.active { opacity: 1; transform: translateY(0); }
+
+    /* 图片基础样式 */
+    .clickable-img { cursor: zoom-in; transition: opacity 0.3s ease; }
+    .clickable-img:hover { opacity: 0.9; }
+    .detail-img { width: 804px; height: 485px; object-fit: cover; }
+
+    /* --- 核心：长图横移窗口 --- */
+    .scroll-viewport {
+      width: 1636px;      /* 窗口宽度 */
+      height: 847px;     /* 窗口高度锁定 */
+      margin: 0 auto;
+      overflow-x: auto;   /* 允许左右滑动 */
+      overflow-y: hidden; /* 禁止上下滑动 */
+      white-space: nowrap;
+      background: #000;
+      cursor: grab;
+      scrollbar-width: none; 
+    }
+    .scroll-viewport::-webkit-scrollbar { display: none; }
+    .scroll-viewport:active { cursor: grabbing; }
+
+    .scroll-viewport img {
+      height: 100%;       /* 高度填满窗口的 847px */
+      width: auto;        /* 宽度根据长图比例自适应延展 */
+      display: inline-block;
+      max-width: none;
+    }
+
+    /* 放大查看 */
+    .zoomed {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: auto !important; height: auto !important;
+      max-width: 95vw !important; max-height: 95vh !important;
+      z-index: 9999; cursor: zoom-out;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.95); 
+    }
+
+    .glass-btn {
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 12px 32px; font-size: 13px; font-weight: 500;
+      transition: all 0.3s ease; color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+    }
+    .detail-label { font-weight: 600; font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
+    .detail-value { color: rgba(255, 255, 255, 0.6); font-size: 16px; line-height: 1.6; }
+  </style>
+</head>
+<body class="pb-24">
+
+  <section class="hero-media-container">
+    <img src="第2页-10_副本.JPG" class="clickable-img" alt="Hero Image" onclick="toggleZoom(this)">
+  </section>
+
+  <main class="container-safe">
+    
+    <div class="grid grid-cols-12 gap-8 items-start" style="margin-top: 100px; margin-bottom: 240px;">
+      <div class="col-span-4">
+        <h1 class="text-[20px] font-medium tracking-tight leading-[1.6]">
+          Un·Future Ecological Vision Plan Exhibition Planning Project<br>
+          <span class="font-cn">《 餐桌上的第三自然》展陈设计过程 </span>
+        </h1>
+      </div>
+      <div class="col-span-5 ml-20">
+        <h2 class="detail-label">Intro/介绍:</h2>
+        <p class="detail-value max-w-[450px]">
+          餐桌上的第三自然分别从四个纬度及四个板块的策略到行动发生着转化：从“人”为中心转向以“生命”为中心；从“物”为中心转为以“超物”为中心；从“体验”经济转为“后碳”经济；从“消费”设计转为“危机”设计。餐盘中所盛放的十五道“菜肴”经过精心 挑选，由花粉、土壤、种子和化肥等十五种颗粒构成，代表了人类食物系统与第一、二自然的紧密联系。
+        </p>
+      </div>
+      <div class="col-span-3 space-y-6 ml-20">
+        <div><h2 class="detail-label">Year/年份:</h2><p class="detail-value">2023.04- 2023.09</p></div>
+        <div><h2 class="detail-label">Location/地点:</h2><p class="detail-value">Henan, China</p></div>
+        <div><h2 class="detail-label">Form/形式:</h2><p class="detail-value">Exhibition</p></div>
+      </div>
+    </div>
+
+
+    <div class="mt-100">
+        <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">Design Content 设计内容</h2>
+        <div class="w-full h-[1px] bg-white/70"></div>
+        <div class="flex justify-between items-start mt-20">
+          <img src="第2页-12_副本.JPG" class="detail-img clickable-img" onclick="toggleZoom(this)">
+          <img src="第2页-10_副本.JPG" class="detail-img clickable-img" onclick="toggleZoom(this)">
+        </div>
+    </div>
+
+    <div class="mt-60">
+      <h2 class="text-[20px] font-medium tracking-[0.05em] uppercase" style="margin-bottom: 20px;">Detailed Introduction 详细介绍</h2>
+      <div class="w-full h-[1px] bg-white/70"></div>
+      
+      <div class="mt-10">
+        <img src="截屏2026-02-14 23.01.11.png" 
+             style="width: 1636px; height: 573px; margin: 0 auto; display: block; " 
+             class="clickable-img" alt="Detailed Info" onclick="toggleZoom(this)">
+        
+        <div class="scroll-viewport mt-40" id="drag-slider" style="width: 1636px; height: 573px" >
+          <img src="Group 1171275030.png" class="clickable-img" onclick="toggleZoom(this)">
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-6" style="margin-top: 120px;">
+      <a href="index.html" class="glass-btn">Home</a>
+      <a href="index.html#latest-projects" class="glass-btn">All Projects</a>
+    </div>
+
+  </main>
+
+  <script>
+    // 轮播逻辑
+    let currentSlide = 0;
+    const wrapper = document.getElementById('slider-wrapper');
+    const dots = document.querySelectorAll('.dot');
+    function goToSlide(i) { currentSlide = i; wrapper.style.transform = `translateX(-${currentSlide * 25}%)`; dots.forEach((d,idx)=>d.classList.toggle('active', idx===i)); }
+    setInterval(() => { currentSlide = (currentSlide + 1) % 4; goToSlide(currentSlide); }, 4000);
+
+    // 拖拽逻辑
+    const slider = document.getElementById('drag-slider');
+    let isDown = false, startX, scrollLeft;
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => isDown = false);
+    slider.addEventListener('mouseup', () => isDown = false);
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2; 
+      slider.scrollLeft = scrollLeft - walk;
+    });
+
+    // 放大逻辑
+    function toggleZoom(img) {
+      img.classList.toggle('zoomed');
+      document.body.style.overflow = img.classList.contains('zoomed') ? 'hidden' : 'auto';
+    }
+
+    // 入场动画
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
